@@ -1,103 +1,31 @@
-import { useEffect, useState } from 'react';
-import Card from '../components/Card/Card';
-import Title from '../components/Title/Title';
-import { CardVariant, ITodo, IUser } from '../types';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import axios from 'axios';
-import List from '../components/List/List';
-import UserItem from '../components/UserItem/UserItem';
-import TodoItem from '../components/TodoItem/TodoItem';
+import UsersPage from '../Pages/UsersPage';
+import TodosPage from '../Pages/TodosPage';
+import CardsPage from '../Pages/CardsPage';
+import EventsPage from '../Pages/EventsPage';
+import HomePage from '../Pages/HomePage';
+import { NavLink } from 'react-router-dom';
+import UserItemPage from '../Pages/UserItemPage';
 
 const App = () => {
-  const [users, setUsers] = useState<IUser[]>([]);
-  const [todos, setTodos] = useState<ITodo[]>([]);
-
-  useEffect(() => {
-    fetchUsers();
-    fetchTodos();
-  }, []);
-
-  async function fetchUsers() {
-    try {
-      const response = await axios.get<IUser[]>(
-        'https://jsonplaceholder.typicode.com/users'
-      );
-
-      setUsers(response.data);
-    } catch (error) {
-      alert(error);
-    }
-  }
-
-  async function fetchTodos() {
-    try {
-      const response = await axios.get<ITodo[]>(
-        'https://jsonplaceholder.typicode.com/todos'
-      );
-
-      setTodos(response.data);
-    } catch (error) {
-      alert(error);
-    }
-  }
-
   return (
-    <>
-      <Title title="Application title" />
-
+    <BrowserRouter>
       <div style={{ display: 'flex', gap: '10px' }}>
-        <Card
-          width="250px"
-          height="250px"
-          variant={CardVariant.outlined}
-          onClick={() => console.log('card 1')}
-        >
-          <h2>Card 1</h2>
-          <button>Buy</button>
-        </Card>
-
-        <Card
-          width="250px"
-          height="250px"
-          variant={CardVariant.primary}
-          onClick={() => console.log('card 2')}
-        >
-          <h2>Card 2</h2>
-          <button>Buy</button>
-        </Card>
-
-        <Card
-          width="250px"
-          height="250px"
-          variant={CardVariant.outlined}
-          onClick={() => console.log('card 3')}
-        >
-          <h2>Card 3</h2>
-          <button>Buy</button>
-        </Card>
-
-        <Card
-          width="250px"
-          height="250px"
-          variant={CardVariant.primary}
-          onClick={() => console.log('card 4')}
-        >
-          <h2>Card 4</h2>
-          <button>Buy</button>
-        </Card>
+        <NavLink to="/users">Users</NavLink>
+        <NavLink to="/todos">Todos</NavLink>
+        <NavLink to="/cards">Cards</NavLink>
+        <NavLink to="/events">Events</NavLink>
       </div>
-
-      {/* <UserList users={users} /> */}
-
-      <List
-        items={users}
-        renderItem={(user: IUser) => <UserItem key={user.id} user={user} />}
-      />
-      <List
-        items={todos}
-        renderItem={(todo: ITodo) => <TodoItem key={todo.id} todo={todo} />}
-      />
-    </>
+      <Routes>
+        <Route path={'/'} element={<HomePage />} />
+        <Route path={'/users'} element={<UsersPage />} />
+        <Route path={'/todos'} element={<TodosPage />} />
+        <Route path={'/cards'} element={<CardsPage />} />
+        <Route path={'/events'} element={<EventsPage />} />
+        <Route path={'/users/:id'} element={<UserItemPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

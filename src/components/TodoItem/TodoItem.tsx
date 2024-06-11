@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { ITodo } from '../../types';
 
 export interface TodoItemProps {
   todo: ITodo;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
+const TodoItem: FC<TodoItemProps> = ({ todo }) => {
   return (
     <div
       style={{
